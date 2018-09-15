@@ -21,6 +21,13 @@ function init_street_view() {
     });
 };
 
+// Initialise speech detection
+function init_speech() {
+    recognition = new SpeechRecognition();
+    speechRecognitionList = new SpeechGrammarList();
+    speechRecognitionList.addFromString(grammar, 1);
+};
+
 // Handle links changing
 function handle_links_change() {
     links = panorama.getLinks();
@@ -150,4 +157,5 @@ function get_image_url(panorama, pov) {
 // Initialisation
 google.maps.event.addDomListener(window, 'load', function() {
     init_street_view();
+    init_speech();
 });
