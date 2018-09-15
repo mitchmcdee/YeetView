@@ -24,13 +24,11 @@ function init_street_view() {
 // Handle links changing
 function handle_links_change() {
     links = panorama.getLinks();
-    console.log(links);
 }
 
 // Handle POV changing
 function handle_pov_change() {
     pov = panorama.getPov();
-    console.log(pov);
 }
 
 // Check if panorama is
@@ -52,7 +50,7 @@ function get_pov_from_link(link) {
 }
 
 // Returns the closest link to the given heading in the range
-// heading - 90 to heading + 90
+// heading - 60 to heading + 60
 function get_closest_link(heading) {
     if (!is_initialised()) {
         return false;
@@ -60,7 +58,7 @@ function get_closest_link(heading) {
     var closest_link;
     var closest_angle = Infinity;
     for (const link of links) {
-        if (!(heading - 90 <= link.heading && link.heading <= heading + 90)) {
+        if (!(heading - 60 <= link.heading && link.heading <= heading + 60)) {
             continue;
         }
         smallest_angle = get_smallest_angle();
@@ -76,47 +74,76 @@ function get_closest_link(heading) {
     return closest_link;
 }
 
-// Move panorama view left
-function go_left() {
-    if (!is_initialised()) {
+// Returns the link in the given direction relative to the given heading
+function get_link(direction, heading) {
+    switch(direction) {
+        case 'left': var link = get_left_link(heading); break;
+        case 'right': var link = get_right_link(heading); break;
+        case 'forward': var link = get_forward_link(heading); break;
+        case 'backward':  var link = get_backward_link(heading); break;
+    }
+    if (!link) {
         return false;
     }
-    link = get_closest_link((pov.heading - 90) % 360);
+    return link;
+}
+
+// Moves the user in the given direction
+function move(direction) {
+    link = get_link(direction, pov.heading);
+    if (!link) {
+        return false;
+    }
     panorama.setPov({heading: link.heading, pitch: pov.pitch});
     panorama.setPano(link.pano);
 }
 
-// Move panorama view right
-function go_right() {
+// Gets the panorama link to the left of the given heading
+function get_left_link(heading) {
     if (!is_initialised()) {
         return false;
     }
-    link = get_closest_link((pov.heading + 90) % 360);
-    panorama.setPov({heading: link.heading, pitch: pov.pitch});
-    panorama.setPano(link.pano);
+    return get_closest_link((heading - 90) % 360);
 }
 
-// Move panorama view forward
-function go_forward() {
+// Gets the panorama link to the right of the given heading
+function get_right_link(heading) {
     if (!is_initialised()) {
         return false;
     }
-    link = get_closest_link((pov.heading) % 360);
-    panorama.setPov({heading: link.heading, pitch: pov.pitch});
-    panorama.setPano(link.pano);
+    return get_closest_link((heading + 90) % 360);
 }
 
-// Move panorama view backward
-function go_backward() {
+// Gets the panorama link forward of the given heading
+function get_forward_link(heading) {
     if (!is_initialised()) {
         return false;
     }
-    link = get_closest_link((pov.heading + 180) % 360);
-    panorama.setPov({heading: link.heading, pitch: pov.pitch});
-    panorama.setPano(link.pano);
+    return get_closest_link((heading) % 360);
 }
 
-// Set up
+// Gets the panorama link backward of the given heading
+function get_backward_link(heading) {
+    if (!is_initialised()) {
+        return false;
+    }
+    return get_closest_link((heading + 180) % 360);
+}
+
+// // Returns a list of panaroma images surrounding the given panorama state
+// function get_surrounding_images() {
+
+// }
+
+// Returns the current panorama image url
+function get_image_url() {
+    base = "https://maps.googleapis.com/maps/api/streetview?size=640x640&pano="
+    return base + panorama.getPano()
+           + "&heading=" + pov.heading
+           + "&pitch=" + pov.pitch;
+}
+
+// Initialisation
 google.maps.event.addDomListener(window, 'load', function() {
     init_street_view();
 });
