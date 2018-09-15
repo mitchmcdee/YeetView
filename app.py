@@ -20,4 +20,4 @@ def index():
 
 
 if __name__ == "__main__":
-    serve(YEET_VIEW_APP, port=80)
+    serve(YEET_VIEW_APP)
