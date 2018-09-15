@@ -43,9 +43,17 @@ function get_smallest_angle(a, b) {
     Math.min((2 * Math.PI) - Math.abs(a - b), Math.abs(a - b))
 }
 
+// Returns the POV from the link heading + current pitch
+function get_pov_from_link(link) {
+    if (!is_initialised()) {
+        return false;
+    }
+    return google.maps.StreetViewPov(link.heading, pov.pitch);
+}
+
 // Returns the closest link to the given heading in the range
 // heading - 90 to heading + 90
-function get_closest_pano(heading) {
+function get_closest_link(heading) {
     if (!is_initialised()) {
         return false;
     }
@@ -65,7 +73,7 @@ function get_closest_pano(heading) {
     if (typeof closest_link == 'undefined') {
         return false;
     }
-    return closest_link.pano;
+    return closest_link;
 }
 
 // Move panorama view left
@@ -73,8 +81,9 @@ function go_left() {
     if (!is_initialised()) {
         return false;
     }
-    console.log('moving left!');
-    panorama.setPano(get_closest_pano((pov.heading - 90) % 360));
+    link = get_closest_link((pov.heading - 90) % 360);
+    panorama.setPov({heading: link.heading, pitch: pov.pitch});
+    panorama.setPano(link.pano);
 }
 
 // Move panorama view right
@@ -82,8 +91,9 @@ function go_right() {
     if (!is_initialised()) {
         return false;
     }
-    console.log('moving right!');
-    panorama.setPano(get_closest_pano((pov.heading + 90) % 360));
+    link = get_closest_link((pov.heading + 90) % 360);
+    panorama.setPov({heading: link.heading, pitch: pov.pitch});
+    panorama.setPano(link.pano);
 }
 
 // Move panorama view forward
@@ -91,8 +101,9 @@ function go_forward() {
     if (!is_initialised()) {
         return false;
     }
-    console.log('moving forward!');
-    panorama.setPano(get_closest_pano((pov.heading) % 360));
+    link = get_closest_link((pov.heading) % 360);
+    panorama.setPov({heading: link.heading, pitch: pov.pitch});
+    panorama.setPano(link.pano);
 }
 
 // Move panorama view backward
@@ -100,8 +111,9 @@ function go_backward() {
     if (!is_initialised()) {
         return false;
     }
-    console.log('moving backward!');
-    panorama.setPano(get_closest_pano((pov.heading + 180) % 360));
+    link = get_closest_link((pov.heading + 180) % 360);
+    panorama.setPov({heading: link.heading, pitch: pov.pitch});
+    panorama.setPano(link.pano);
 }
 
 // Set up
