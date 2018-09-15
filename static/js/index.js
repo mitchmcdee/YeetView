@@ -134,7 +134,7 @@ function get_backward_link(heading) {
 // relative to the given heading (pitch set to be parallel to ground)
 function get_surrounding_images(panorama, heading) {
     image_urls = []
-    for (const delta of [0, 90, 180, 360]) {
+    for (const delta of [0, 90, 180, 270]) {
         pov = {'heading': (heading + delta) % 360, pitch: 0}
         image_urls.push(get_image_url(panorama, pov));
     }
