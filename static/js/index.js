@@ -130,17 +130,21 @@ function get_backward_link(heading) {
     return get_closest_link((heading + 180) % 360);
 }
 
-// // Returns a list of panaroma images surrounding the given panorama state
-// function get_surrounding_images() {
+// Returns a list of panaroma images surrounding the given panorama,
+// relative to the given heading (pitch set to be parallel to ground)
+function get_surrounding_images(panorama, heading) {
+    image_urls = []
+    for (const delta of [0, 90, 180, 360]) {
+        pov = {'heading': (heading + delta) % 360, pitch: 0}
+        image_urls.push(get_image_url(panorama, pov));
+    }
+    return image_urls;
+}
 
-// }
-
-// Returns the current panorama image url
-function get_image_url() {
+// Returns the image url for the given
+function get_image_url(panorama, pov) {
     base = "https://maps.googleapis.com/maps/api/streetview?size=640x640&pano="
-    return base + panorama.getPano()
-           + "&heading=" + pov.heading
-           + "&pitch=" + pov.pitch;
+    return base + panorama + "&heading=" + pov.heading + "&pitch=" + pov.pitch;
 }
 
 // Initialisation
