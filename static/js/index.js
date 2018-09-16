@@ -10,14 +10,14 @@ function init_street_view() {
         }
     );
 
-    // Add listener for neighbours changing
-    panorama.addListener('links_changed', function() {
-        handle_links_change();
-    });
-
     // Add listener for point of view changing
     panorama.addListener('pov_changed', function() {
         handle_pov_change();
+    });
+
+    // Add listener for neighbours changing
+    panorama.addListener('links_changed', function() {
+        handle_links_change();
     });
 };
 
@@ -64,11 +64,28 @@ function init_speech() {
 // Handle links changing
 function handle_links_change() {
     links = panorama.getLinks();
+    upload_images();
 }
 
 // Handle POV changing
 function handle_pov_change() {
     pov = panorama.getPov();
+    upload_images();
+}
+
+// Uploads the latest list of images
+function upload_images() {
+    if (!is_initialised()) {
+        return false;
+    }
+    $.ajax({
+        url: "/upload_image_list",
+        data: JSON.stringify({'images': get_surrounding_images()}),
+        dataType: "json",
+        type: "POST",
+        contentType: "application/json; charset=utf-"
+    });
+    return true;
 }
 
 // Check if panorama is
