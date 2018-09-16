@@ -32,7 +32,10 @@ def get_result():
     pitch = request.args.get('pitch')
     print(pano, heading, pitch)
     print('streetview?size=640x640&pano=' + pano + '&heading=' + heading + '&pitch=' + pitch)
-    return jsonify({'result': test_model.get_result('streetview?size=640x640&pano=' + pano + '&heading=' + heading + '&pitch=' + pitch)})
+    cache_search = test_model.get_result('streetview?size=640x640&pano=' + pano + '&heading=' + heading + '&pitch=' + pitch)
+    if not cache_search:
+        return '', 500
+    return jsonify({'result': cache_search})
 
 if __name__ == "__main__":
     YEET_VIEW_APP.run(ssl_context='adhoc', host='0.0.0.0', port=443)
