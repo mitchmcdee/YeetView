@@ -5,6 +5,7 @@ from show_attend_and_tell.api import *
 YEET_VIEW_APP = Flask(__name__)
 
 test_model = show_and_tell_model()
+images = set()
 
 @YEET_VIEW_APP.route("/")
 def index():
@@ -12,8 +13,15 @@ def index():
 
 @YEET_VIEW_APP.route("/upload_image_list", methods=['POST'])
 def image_list():
-    json_data = request.get_json()
-    test_model.process_list(json_data['images'])
+    unique_images = []
+    for image in request.get_json()['images']:
+        if image not in images:
+            unique_images.append(image)
+            images.add(image)
+
+    if len(unique_images) != 0:
+        print(len(unique_images))
+        test_model.process_list(unique_images)
 
 @YEET_VIEW_APP.route("/get_result/<result>", methods=['GET'])
 def get_results(result):
