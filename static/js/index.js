@@ -188,15 +188,14 @@ function get_back_link(heading) {
 // Returns a list of panaroma images surrounding the current panorama,
 // relative to the current heading (pitch set to be parallel to ground)
 function get_surrounding_images() {
-    panos = [{'pano': panorama.getPano(), 'heading': pov.heading}, ...panorama.getLinks()];
-    console.log(panos);
+    panos = [{'pano': panorama.getPano()} ...panorama.getLinks()];
     image_urls = []
     for (const pano of panos) {
         for (const heading of [0, 90, 180, 270]) {
-            pano_pov = {'heading': heading, pitch: 0}
-            image_urls.push(get_image_url(pano.pano, pano_pov));
+            image_urls.push(get_image_url(pano.pano, {'heading': heading, pitch: 0}));
         }
     }
+    console.log(image_urls);
     return image_urls;
 }
 
