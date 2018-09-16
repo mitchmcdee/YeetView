@@ -34,6 +34,7 @@ function init_speech() {
     recognition.continuous = true;
     recognition.interimResults = false;
     recognition.lang = 'en-AU';
+    speaking = false;
 
     // Add listener for result
     recognition.onresult = function(event) {
@@ -94,8 +95,15 @@ function get_description() {
 
 // Speak out the description result
 function speak_description(description) {
+    if (speaking) {
+        return;
+    }
     console.log("speaking", description);
+    speaking = true;
     var msg = new SpeechSynthesisUtterance(description);
+    msg.onend = function() {
+        speaking = false;
+    }
     window.speechSynthesis.speak(msg);
 }
 
