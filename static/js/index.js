@@ -64,6 +64,7 @@ function init_speech() {
 
 // Handle links changing
 function handle_links_change() {
+    console.log('here');
     links = panorama.getLinks();
     upload_images();
 }
@@ -71,7 +72,6 @@ function handle_links_change() {
 // Handle POV changing
 function handle_pov_change() {
     pov = panorama.getPov();
-    upload_images();
     get_description();
 }
 
@@ -79,7 +79,6 @@ function handle_pov_change() {
 function get_description() {
     heading = (Math.round(pov.heading / 90) * 90).toFixed();
     url = "/get_result?pano=" + panorama.getPano() + "&heading=" + heading + "&pitch=0";
-    console.log(url);
     $.ajax({
         url: url,
         type: "GET",
@@ -225,7 +224,6 @@ function get_surrounding_images() {
             image_urls.push(get_image_url(pano.pano, {'heading': heading, pitch: 0}));
         }
     }
-    console.log(image_urls);
     return image_urls;
 }
 
