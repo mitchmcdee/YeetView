@@ -70,9 +70,6 @@ function init_speech() {
 // Handle links changing
 function handle_links_change() {
     links = panorama.getLinks();
-    if (loading) {
-        return;
-    }
     upload_images();
 }
 
@@ -126,6 +123,10 @@ function speak_description(description) {
 
 // Uploads the latest list of images
 function upload_images() {
+    console.log('trying to load:', loading);
+    if (loading) {
+        return;
+    }
     loading = true;
     images = get_surrounding_images();
     if (!is_initialised() || images.length == 0) {
