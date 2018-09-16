@@ -37,6 +37,7 @@ function init_speech() {
     recognition.interimResults = false;
     recognition.lang = 'en-AU';
     speaking = false;
+    start = new Date().getTime();
 
     // Add listener for result
     recognition.onresult = function(event) {
@@ -67,13 +68,17 @@ function init_speech() {
 // Handle links changing
 function handle_links_change() {
     links = panorama.getLinks();
-    console.log('here', links);
     console.log(upload_images());
 }
 
 // Handle POV changing
 function handle_pov_change() {
     pov = panorama.getPov();
+    var end = new Date().getTime();
+    if (start + 5000 < end) {
+        console.log('debounced');
+        return;
+    }
     get_description();
 }
 
@@ -86,7 +91,6 @@ function get_description() {
         type: "GET",
         dataType: 'json',
         success: function(data, status) {
-            console.log("got response!", status, data);
             if (status != "success") {
                 return;
             }
