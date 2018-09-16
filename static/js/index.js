@@ -99,6 +99,7 @@ function get_description() {
         type: "GET",
         dataType: 'json',
         complete: function(data, status) {
+            console.log(data, success);
             if (status != "success") {
                 return;
             }
@@ -123,7 +124,6 @@ function speak_description(description) {
 
 // Uploads the latest list of images
 function upload_images() {
-    console.log('trying to load:', loading);
     if (loading) {
         return;
     }
