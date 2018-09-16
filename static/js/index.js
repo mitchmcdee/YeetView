@@ -70,21 +70,22 @@ function handle_links_change() {
 // Handle POV changing
 function handle_pov_change() {
     pov = panorama.getPov();
-    upload_images(pov);
+    upload_images();
+    get_description();
 }
 
-// get results
-function get_results() {
-    heading = (Math.round(pov.heading * 90) / 90).toFixed(1);
+// Returns the photo description to the current heading
+function get_description() {
+    heading = (Math.round(pov.heading * 90) / 90).toFixed();
     url = "/get_result?pano=" + panorama.getPano() + "&heading=" + heading + "&pitch=0";
     console.log(url);
-    $.get(url, (data) => {
-        console.log(data);
+    $.get(url, function(data, status) {
+        console.log(data, status);
     });
 }
 
 // Uploads the latest list of images
-function upload_images(pov) {
+function upload_images() {
     images = get_surrounding_images();
     if (!is_initialised() || images.length == 0) {
         return false;
@@ -94,8 +95,7 @@ function upload_images(pov) {
         data: JSON.stringify({'images': images}),
         dataType: "json",
         type: "POST",
-        contentType: "application/json; charset=utf-8",
-        success: get_results(pov)
+        contentType: "application/json; charset=utf-8"
     });
     return true;
 }
