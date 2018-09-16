@@ -38,6 +38,7 @@ function init_speech() {
     recognition.interimResults = false;
     recognition.lang = 'en-AU';
     speaking = false;
+    loading = false;
     start_time = new Date().getTime();
 
     // Add listener for result
@@ -69,6 +70,9 @@ function init_speech() {
 // Handle links changing
 function handle_links_change() {
     links = panorama.getLinks();
+    if (loading) {
+        return;
+    }
     upload_images();
 }
 
@@ -122,6 +126,7 @@ function speak_description(description) {
 
 // Uploads the latest list of images
 function upload_images() {
+    loading = true;
     images = get_surrounding_images();
     if (!is_initialised() || images.length == 0) {
         return false;
@@ -132,6 +137,9 @@ function upload_images() {
         dataType: "json",
         type: "POST",
         contentType: "application/json; charset=utf-8"
+        success: function() {
+            loading = false;
+        }
     });
     return true;
 }
