@@ -75,8 +75,8 @@ function handle_links_change() {
 function handle_pov_change() {
     pov = panorama.getPov();
     var end = new Date().getTime();
-    if (start + 5000 < end) {
-        console.log('debounced', start, end);
+    if (end - start < 5000) {
+        console.log('debounced', end - start);
         return;
     }
     start = end;
