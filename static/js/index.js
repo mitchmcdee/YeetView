@@ -84,9 +84,18 @@ function get_description() {
         type: "GET",
         dataType: 'json',
         success: function(data, status) {
-            console.log(data, status);
+            if (status != "status") {
+                return;
+            }
+            speak_description(data["result"]);
         }
     });
+}
+
+// Speak out the description result
+function speak_description(description) {
+    var msg = new SpeechSynthesisUtterance(description);
+    window.speechSynthesis.speak(msg);
 }
 
 // Uploads the latest list of images
