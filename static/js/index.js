@@ -25,6 +25,7 @@ function init_street_view() {
 // Stop speech recognition
 function stop_speech() {
     recognition.stop();
+    speaking = false;
     setTimeout(stop_speech, 5000);
 }
 
