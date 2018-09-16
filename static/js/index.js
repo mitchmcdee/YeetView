@@ -99,7 +99,7 @@ function get_description() {
         type: "GET",
         dataType: 'json',
         complete: function(data, status) {
-            console.log(data, success);
+            console.log(data, status);
             if (status != "success") {
                 return;
             }
