@@ -66,7 +66,7 @@ function init_speech() {
 function handle_links_change() {
     links = panorama.getLinks();
     console.log('here', links);
-    upload_images();
+    console.log(upload_images());
 }
 
 // Handle POV changing
