@@ -103,7 +103,7 @@ function get_description() {
             if (status != "success") {
                 return;
             }
-            speak_description(data["result"]);
+            speak_description(data["responseJSON"]["result"]);
         }
     });
 }
