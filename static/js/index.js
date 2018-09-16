@@ -94,6 +94,7 @@ function get_description() {
 
 // Speak out the description result
 function speak_description(description) {
+    console.log(description);
     var msg = new SpeechSynthesisUtterance(description);
     window.speechSynthesis.speak(msg);
 }
