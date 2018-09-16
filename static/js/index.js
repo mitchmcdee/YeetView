@@ -85,7 +85,7 @@ function get_description() {
         type: "GET",
         dataType: 'json',
         success: function(data, status) {
-            console.log("got response!", success, data);
+            console.log("got response!", status, data);
             if (status != "success") {
                 return;
             }
