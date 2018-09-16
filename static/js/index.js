@@ -84,7 +84,7 @@ function get_description() {
         type: "GET",
         dataType: 'json',
         success: function(data, status) {
-            if (status != "status") {
+            if (status != "success") {
                 return;
             }
             speak_description(data["result"]);
@@ -94,7 +94,6 @@ function get_description() {
 
 // Speak out the description result
 function speak_description(description) {
-    console.log(description);
     var msg = new SpeechSynthesisUtterance(description);
     window.speechSynthesis.speak(msg);
 }
