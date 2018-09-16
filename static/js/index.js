@@ -73,6 +73,7 @@ function handle_pov_change() {
     upload_images();
     heading = (Math.round(pov.heading * 90) / 90).toFixed(1);
     url = "/get_result?pano=" + panorama.getPano() + "&heading=" + heading + "&pitch=0";
+    console.log(url);
     $.get(url, (data) => {
         console.log(data);
     });
@@ -80,15 +81,16 @@ function handle_pov_change() {
 
 // Uploads the latest list of images
 function upload_images() {
-    if (!is_initialised()) {
+    images = get_surrounding_images();
+    if (!is_initialised() || imagse.length == 0) {
         return false;
     }
     $.ajax({
         url: "/upload_image_list",
-        data: JSON.stringify({'images': get_surrounding_images()}),
+        data: JSON.stringify({'images': images}),
         dataType: "json",
         type: "POST",
-        contentType: "application/json; charset=utf-"
+        contentType: "application/json; charset=utf-8"
     });
     return true;
 }
