@@ -9,6 +9,7 @@ function init_street_view() {
           zoom: 1
         }
     );
+    pov = {'heading': 0, 'pitch': 0};
 
     // Add listener for point of view changing
     panorama.addListener('pov_changed', function() {
