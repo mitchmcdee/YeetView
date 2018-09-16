@@ -10,6 +10,7 @@ function init_street_view() {
         }
     );
     pov = {'heading': 0, 'pitch': 0};
+    start_pov = pov;
 
     // Add listener for point of view changing
     panorama.addListener('pov_changed', function() {
@@ -37,7 +38,7 @@ function init_speech() {
     recognition.interimResults = false;
     recognition.lang = 'en-AU';
     speaking = false;
-    start = new Date().getTime();
+    start_time = new Date().getTime();
 
     // Add listener for result
     recognition.onresult = function(event) {
@@ -74,11 +75,17 @@ function handle_links_change() {
 // Handle POV changing
 function handle_pov_change() {
     pov = panorama.getPov();
-    var end = new Date().getTime();
-    if (end - start < 3000) {
+    var end_time = new Date().getTime();
+    if (end_time - start_time < 3000) {
         return;
     }
-    start = end;
+    var end_pov = pov;
+    var delta_heading = Math.abs(end_pov.heading - start_pov.heading);
+    if (delta_heading < 30) {
+        return;
+    }
+    start_time = end_time;
+    start_pov = end_pov;
     get_description();
 }
 
