@@ -76,7 +76,7 @@ function handle_pov_change() {
 
 // Returns the photo description to the current heading
 function get_description() {
-    heading = (Math.round(pov.heading * 90) / 90).toFixed();
+    heading = (Math.round(pov.heading / 90) * 90).toFixed();
     url = "/get_result?pano=" + panorama.getPano() + "&heading=" + heading + "&pitch=0";
     console.log(url);
     $.ajax({
