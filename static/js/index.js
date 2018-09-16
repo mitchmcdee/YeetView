@@ -21,11 +21,67 @@ function init_street_view() {
     });
 };
 
+function stop_speech() {
+    recognition.stop();
+    setTimeout(stop_speech, 10000);
+}
+
 // Initialise speech detection
 function init_speech() {
-    recognition = new SpeechRecognition();
-    speechRecognitionList = new SpeechGrammarList();
-    speechRecognitionList.addFromString(grammar, 1);
+    // Add speech recognition
+    recognition = new webkitSpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = false;
+    recognition.lang = 'en-AU';
+
+    // Add listener for result
+    recognition.onresult = function(event) {
+        if (typeof(event.results) == 'undefined') {
+            recognition.stop();
+        }
+        for (const result of event.results) {
+            console.log("here");
+            for (const word of result[0].transcript.split(" ")) {
+                console.log("trying ", word);
+                // If successful, don't process any more commands
+                if (move(word)) {
+                    return;
+                }
+            }
+        }
+    };
+
+    // Add listener for end
+    recognition.onend = function(event) {
+        console.log('restarting!');
+        recognition.start();
+    }
+
+    recognition.start();
+    stop_speech();
+    // recognition.start();
+
+    // // Add listener for result
+    // recognition.onend = function(event) {
+    //     for (const result of event.results) {
+    //         for (const alternative of result) {
+    //             if (typeof alternative.transcript == 'undefined') {
+    //                 continue;
+    //             }
+    //             for (const word of alternative.transcript.split(" ")) {
+    //                 if (move(word)) {
+    //                     console.log('moving ' + word + '!');
+    //                     return;
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+
+    // // Add listener for error
+    // recognition.onerror = function(event) {
+    //     console.log('problem!');
+    // }
 };
 
 // Handle links changing
@@ -87,7 +143,7 @@ function get_link(direction, heading) {
         case 'left': var link = get_left_link(heading); break;
         case 'right': var link = get_right_link(heading); break;
         case 'forward': var link = get_forward_link(heading); break;
-        case 'backward':  var link = get_backward_link(heading); break;
+        case 'back':  var link = get_back_link(heading); break;
     }
     if (!link) {
         return false;
@@ -103,6 +159,7 @@ function move(direction) {
     }
     panorama.setPov({heading: link.heading, pitch: pov.pitch});
     panorama.setPano(link.pano);
+    return true;
 }
 
 // Gets the panorama link to the left of the given heading
@@ -129,8 +186,8 @@ function get_forward_link(heading) {
     return get_closest_link((heading) % 360);
 }
 
-// Gets the panorama link backward of the given heading
-function get_backward_link(heading) {
+// Gets the panorama link back of the given heading
+function get_back_link(heading) {
     if (!is_initialised()) {
         return false;
     }

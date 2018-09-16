@@ -1,5 +1,4 @@
 import csv
-from waitress import serve
 from flask import Flask, render_template, jsonify
 
 
@@ -20,4 +19,4 @@ def index():
 
 
 if __name__ == "__main__":
-    serve(YEET_VIEW_APP)
+    YEET_VIEW_APP.run(ssl_context='adhoc')
