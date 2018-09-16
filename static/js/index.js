@@ -23,7 +23,7 @@ function init_street_view() {
 
 function stop_speech() {
     recognition.stop();
-    setTimeout(stop_speech, 10000);
+    setTimeout(stop_speech, 5000);
 }
 
 // Initialise speech detection
@@ -59,29 +59,6 @@ function init_speech() {
 
     recognition.start();
     stop_speech();
-    // recognition.start();
-
-    // // Add listener for result
-    // recognition.onend = function(event) {
-    //     for (const result of event.results) {
-    //         for (const alternative of result) {
-    //             if (typeof alternative.transcript == 'undefined') {
-    //                 continue;
-    //             }
-    //             for (const word of alternative.transcript.split(" ")) {
-    //                 if (move(word)) {
-    //                     console.log('moving ' + word + '!');
-    //                     return;
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-
-    // // Add listener for error
-    // recognition.onerror = function(event) {
-    //     console.log('problem!');
-    // }
 };
 
 // Handle links changing
@@ -102,14 +79,6 @@ function is_initialised() {
 // Returns the smallest angle between angles a and b
 function get_smallest_angle(a, b) {
     Math.min((2 * Math.PI) - Math.abs(a - b), Math.abs(a - b))
-}
-
-// Returns the POV from the link heading + current pitch
-function get_pov_from_link(link) {
-    if (!is_initialised()) {
-        return false;
-    }
-    return google.maps.StreetViewPov(link.heading, pov.pitch);
 }
 
 // Returns the closest link to the given heading in the range
@@ -194,13 +163,17 @@ function get_back_link(heading) {
     return get_closest_link((heading + 180) % 360);
 }
 
-// Returns a list of panaroma images surrounding the given panorama,
-// relative to the given heading (pitch set to be parallel to ground)
-function get_surrounding_images(panorama, heading) {
+// Returns a list of panaroma images surrounding the current panorama,
+// relative to the current heading (pitch set to be parallel to ground)
+function get_surrounding_images() {
+    panos = [{'pano': panorama.getPano(), 'heading': pov.heading}, ...panorama.getLinks()];
+    console.log(panos);
     image_urls = []
-    for (const delta of [0, 90, 180, 270]) {
-        pov = {'heading': (heading + delta) % 360, pitch: 0}
-        image_urls.push(get_image_url(panorama, pov));
+    for (const pano of panos) {
+        for (const delta of [0, 90, 180, 270]) {
+            pano_pov = {'heading': (pano.heading + delta) % 360, pitch: 0}
+            image_urls.push(get_image_url(pano.pano, pano_pov));
+        }
     }
     return image_urls;
 }

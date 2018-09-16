@@ -1,10 +1,10 @@
 import csv
 from flask import Flask, render_template, jsonify, request
-from show_attend_and_tell.api import *
+# from show_attend_and_tell.api import *
 
 YEET_VIEW_APP = Flask(__name__)
 
-test_model = show_and_tell_model()
+# test_model = show_and_tell_model()
 
 @YEET_VIEW_APP.route("/")
 def index():
