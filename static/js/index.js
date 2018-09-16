@@ -68,7 +68,7 @@ function init_speech() {
 // Handle links changing
 function handle_links_change() {
     links = panorama.getLinks();
-    console.log(upload_images());
+    upload_images();
 }
 
 // Handle POV changing
@@ -76,9 +76,10 @@ function handle_pov_change() {
     pov = panorama.getPov();
     var end = new Date().getTime();
     if (start + 5000 < end) {
-        console.log('debounced');
+        console.log('debounced', start, end);
         return;
     }
+    start = end;
     get_description();
 }
 
