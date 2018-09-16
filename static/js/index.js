@@ -4,7 +4,7 @@ function init_street_view() {
     // TODO(mitch): remove these defaults
     panorama = new google.maps.StreetViewPanorama(
         document.getElementById('street-view'), {
-          position: {lat: 37.869260, lng: -122.254811},
+          position: {lat: 40.7831, lng: 73.9712},
           pov: {heading: 165, pitch: 0},
           zoom: 1
         }

@@ -23,6 +23,8 @@ def image_list():
         print(len(unique_images))
         test_model.process_list(unique_images)
 
+    return True
+
 @YEET_VIEW_APP.route("/get_result/<result>", methods=['GET'])
 def get_results(result):
     return jsonify({'result': test_model.get_result(result)})
