@@ -64,8 +64,8 @@ function init_speech() {
 
 // Handle links changing
 function handle_links_change() {
-    console.log('here');
     links = panorama.getLinks();
+    console.log('here', links);
     upload_images();
 }
 
