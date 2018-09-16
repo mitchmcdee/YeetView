@@ -79,8 +79,13 @@ function get_description() {
     heading = (Math.round(pov.heading * 90) / 90).toFixed();
     url = "/get_result?pano=" + panorama.getPano() + "&heading=" + heading + "&pitch=0";
     console.log(url);
-    $.get(url, function(data, status) {
-        console.log(data, status);
+    $.ajax({
+        url: url,
+        type: "GET",
+        dataType: 'json',
+        success: function(data, status) {
+            console.log(data, status);
+        }
     });
 }
 
