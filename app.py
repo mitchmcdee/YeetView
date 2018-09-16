@@ -23,7 +23,7 @@ def image_list():
         print(len(unique_images))
         test_model.process_list(unique_images)
 
-    return True
+    return '', 200
 
 @YEET_VIEW_APP.route("/get_result", methods=['GET'])
 def get_result():
