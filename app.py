@@ -23,9 +23,14 @@ def image_list():
         print(len(unique_images))
         test_model.process_list(unique_images)
 
-@YEET_VIEW_APP.route("/get_result/<result>", methods=['GET'])
-def get_results(result):
-    return jsonify({'result': test_model.get_result(result)})
+@YEET_VIEW_APP.route("/get_result", methods=['GET'])
+def get_result():
+    pano = request.args.get('pano')
+    heading = request.args.get('heading')
+    pitch = request.args.get('pitch')
+    print(pano, heading, pitch)
+    print('streetview?size=640x640&pano=' + pano + '&heading=' + heading + '&pitch=' + pitch)
+    return jsonify({'result': test_model.get_result('streetview?size=640x640&pano=' + pano + '&heading=' + heading + '&pitch=' + pitch)})
 
 if __name__ == "__main__":
     YEET_VIEW_APP.run(ssl_context='adhoc', host='0.0.0.0', port=443)
