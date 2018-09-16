@@ -86,7 +86,7 @@ function get_results() {
 // Uploads the latest list of images
 function upload_images(pov) {
     images = get_surrounding_images();
-    if (!is_initialised() || imagse.length == 0) {
+    if (!is_initialised() || images.length == 0) {
         return false;
     }
     $.ajax({
