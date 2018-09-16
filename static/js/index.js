@@ -98,7 +98,7 @@ function get_description() {
         url: url,
         type: "GET",
         dataType: 'json',
-        success: function(data, status) {
+        complete: function(data, status) {
             if (status != "success") {
                 return;
             }
@@ -138,7 +138,7 @@ function upload_images() {
         dataType: "json",
         type: "POST",
         contentType: "application/json; charset=utf-8",
-        success: function() {
+        complete: function() {
             loading = false;
         }
     });
