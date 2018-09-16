@@ -21,6 +21,7 @@ function init_street_view() {
     });
 };
 
+// Stop speech recognition
 function stop_speech() {
     recognition.stop();
     setTimeout(stop_speech, 5000);
@@ -40,9 +41,8 @@ function init_speech() {
             recognition.stop();
         }
         for (const result of event.results) {
-            console.log("here");
             for (const word of result[0].transcript.split(" ")) {
-                console.log("trying ", word);
+                console.log("heard", word);
                 // If successful, don't process any more commands
                 if (move(word)) {
                     return;
@@ -53,10 +53,10 @@ function init_speech() {
 
     // Add listener for end
     recognition.onend = function(event) {
-        console.log('restarting!');
         recognition.start();
     }
 
+    // Start recognition
     recognition.start();
     stop_speech();
 };
@@ -94,6 +94,7 @@ function get_description() {
 
 // Speak out the description result
 function speak_description(description) {
+    console.log("speaking", description);
     var msg = new SpeechSynthesisUtterance(description);
     window.speechSynthesis.speak(msg);
 }
