@@ -71,6 +71,11 @@ function handle_links_change() {
 function handle_pov_change() {
     pov = panorama.getPov();
     upload_images();
+    heading = (Math.round(pov.heading * 90) / 90).toFixed(1);
+    url = "/get_result?pano=" + panorama.getPano() + "&heading=" + heading + "&pitch=0";
+    $.get(url, (data) => {
+        console.log(data);
+    });
 }
 
 // Uploads the latest list of images
@@ -187,8 +192,8 @@ function get_surrounding_images() {
     console.log(panos);
     image_urls = []
     for (const pano of panos) {
-        for (const delta of [0, 90, 180, 270]) {
-            pano_pov = {'heading': (pano.heading + delta) % 360, pitch: 0}
+        for (const heading of [0, 90, 180, 270]) {
+            pano_pov = {'heading': heading, pitch: 0}
             image_urls.push(get_image_url(pano.pano, pano_pov));
         }
     }
